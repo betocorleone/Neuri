@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuri Health Diary - Code Manual</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #8B5CF6;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #8B5CF6, #EC4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 32px;
+        }
+        
+        h1 {
+            color: #1f2937;
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.2em;
+            margin: 0;
+        }
+        
+        .toc {
+            background: #f3f4f6;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            color: #374151;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .toc li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #8B5CF6;
+        }
+        
+        .toc a {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            page-break-inside: avoid;
+        }
+        
+        .section h2 {
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        
+        .section h3 {
+            color: #374151;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .section h4 {
+            color: #4b5563;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .code-block {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .inline-code {
+            background: #e5e7eb;
+            color: #374151;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .feature-card h4 {
+            margin-top: 0;
+            color: #8B5CF6;
+        }
+        
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .file-structure {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .architecture-diagram {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .component-box {
+            display: inline-block;
+            background: #8B5CF6;
+            color: white;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #6b7280;
+            margin: 0 10px;
+        }
+        
+        .api-endpoint {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .warning {
+            background: #fef3cd;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .success {
+            background: #dcfce7;
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .print-instructions {
+            background: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .print-button {
+            background: #8B5CF6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        
+        .print-button:hover {
+            background: #7C3AED;
+        }
+        
+        @media print {
+            body { margin: 0; background: white; }
+            .print-instructions { display: none; }
+            .section { page-break-inside: avoid; }
+            .code-block { page-break-inside: avoid; }
+        }
+        
+        .version-info {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .changelog {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .changelog h4 {
+            color: #2563eb;
+            margin-top: 0;
+        }
+        
+        .changelog ul {
+            margin: 10px 0;
+        }
+        
+        .changelog li {
+            margin: 5px 0;
+        }
+    </style>
+    <script>
+        function printManual() {
+            window.print();
+        }
+        
+        function saveAsPDF() {
+            if (window.chrome) {
+                window.print();
+            } else {
+                alert('To save as PDF:\n1. Press Ctrl+P (Cmd+P on Mac)\n2. Select "Save as PDF" as destination\n3. Click Save');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <!-- Print Instructions -->
+        <div class="print-instructions">
+            <h3>📄 Instructions to save this manual:</h3>
+            <p><strong>Option 1 - Print:</strong></p>
+            <button class="print-button" onclick="printManual()">🖨️ Print Manual</button>
+            
+            <p><strong>Option 2 - Save as PDF:</strong></p>
+            <button class="print-button" onclick="saveAsPDF()">📄 Save as PDF</button>
+            
+            <p><strong>Manual instructions:</strong></p>
+            <ol>
+                <li>Press <strong>Ctrl+P</strong> (or <strong>Cmd+P</strong> on Mac)</li>
+                <li>In the print dialog, select <strong>"Save as PDF"</strong> as destination</li>
+                <li>Click <strong>"Save"</strong> and choose location</li>
+            </ol>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">N</div>
+            <h1>Neuri Health Diary</h1>
+            <p class="subtitle">Complete Code Manual & Technical Documentation</p>
+            <p>Generated on: <strong>${new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            })}</strong></p>
+        </div>
+
+        <!-- Version Info -->
+        <div class="version-info">
+            <h3>📋 Project Information</h3>
+            <ul>
+                <li><strong>Project Name:</strong> Neuri Health Diary</li>
+                <li><strong>Version:</strong> 1.0.0</li>
+                <li><strong>Framework:</strong> React 18 + TypeScript</li>
+                <li><strong>Build Tool:</strong> Vite</li>
+                <li><strong>Styling:</strong> Tailwind CSS</li>
+                <li><strong>Language Support:</strong> Spanish & English</li>
+                <li><strong>Data Storage:</strong> LocalStorage (with Supabase integration ready)</li>
+            </ul>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>📚 Table of Contents</h2>
+            <ul>
+                <li><a href="#overview">1. Project Overview</a></li>
+                <li><a href="#architecture">2. Architecture & Design Patterns</a></li>
+                <li><a href="#tech-stack">3. Technology Stack</a></li>
+                <li><a href="#file-structure">4. File Structure</a></li>
+                <li><a href="#core-components">5. Core Components</a></li>
+                <li><a href="#context-providers">6. Context Providers</a></li>
+                <li><a href="#services">7. Services & Utilities</a></li>
+                <li><a href="#pages">8. Page Components</a></li>
+                <li><a href="#internationalization">9. Internationalization (i18n)</a></li>
+                <li><a href="#data-management">10. Data Management</a></li>
+                <li><a href="#features">11. Key Features</a></li>
+                <li><a href="#deployment">12. Deployment & Build</a></li>
+                <li><a href="#troubleshooting">13. Troubleshooting</a></li>
+                <li><a href="#future-enhancements">14. Future Enhancements</a></li>
+            </ul>
+        </div>
+
+        <!-- 1. Project Overview -->
+        <div class="section" id="overview">
+            <h2>1. Project Overview</h2>
+            
+            <h3>Purpose</h3>
+            <p>Neuri is a comprehensive health diary application designed specifically for families to track the daily health status of children, with a particular focus on seizure monitoring, emotional states, and symptom tracking. The application provides a warm, child-friendly interface with multilingual support.</p>
+            
+            <h3>Target Users</h3>
+            <ul>
+                <li><strong>Primary:</strong> Parents and caregivers of children with health conditions</li>
+                <li><strong>Secondary:</strong> Healthcare professionals reviewing patient data</li>
+                <li><strong>Tertiary:</strong> Children who can self-report (age-appropriate interface)</li>
+            </ul>
+            
+            <h3>Core Objectives</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📊 Health Tracking</h4>
+                    <p>Comprehensive daily logging of emotions, symptoms, seizures, and observations</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 Pattern Recognition</h4>
+                    <p>AI-powered analysis to identify trends and correlations in health data</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 User Experience</h4>
+                    <p>Intuitive, child-friendly interface with accessibility features</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🌍 Multilingual</h4>
+                    <p>Full support for Spanish and English languages</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Reporting</h4>
+                    <p>Medical-grade reports for healthcare provider consultations</p>
+                </div>
+                <div class="feature-card">
+                    <h4>👥 Multi-Profile</h4>
+                    <p>Support for multiple children in a single family account</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Architecture -->
+        <div class="section" id="architecture">
+            <h2>2. Architecture & Design Patterns</h2>
+            
+            <h3>Application Architecture</h3>
+            <div class="architecture-diagram">
+                <div class="component-box">React App</div>
+                <div class="arrow">↓</div>
+                <div class="component-box">Context Providers</div>
+                <div class="arrow">↓</div>
+                <div class="component-box">Page Components</div>
+                <div class="arrow">↓</div>
+                <div class="component-box">UI Components</div>
+                <div class="arrow">↓</div>
+                <div class="component-box">Services & Utils</div>
+            </div>
+            
+            <h3>Design Patterns Used</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🏗️ Component Composition</h4>
+                    <p>Modular, reusable components with clear separation of concerns</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔄 Context Pattern</h4>
+                    <p>Global state management using React Context API</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎣 Custom Hooks</h4>
+                    <p>Reusable logic encapsulated in custom React hooks</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏭 Service Layer</h4>
+                    <p>Business logic separated into dedicated service classes</p>
+                </div>
+            </div>
+            
+            <h3>Data Flow</h3>
+            <div class="code-block">
+User Interaction → Component → Context → Service → LocalStorage
+                ↓
+            UI Update ← Component ← Context ← Service Response
+            </div>
+        </div>
+
+        <!-- 3. Technology Stack -->
+        <div class="section" id="tech-stack">
+            <h2>3. Technology Stack</h2>
+            
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <h4>⚛️ Frontend Framework</h4>
+                    <p>React 18.3.1 with TypeScript</p>
+                </div>
+                <div class="tech-item">
+                    <h4>🎨 Styling</h4>
+                    <p>Tailwind CSS 3.4.1</p>
+                </div>
+                <div class="tech-item">
+                    <h4>🔧 Build Tool</h4>
+                    <p>Vite 5.4.2</p>
+                </div>
+                <div class="tech-item">
+                    <h4>🎯 Icons</h4>
+                    <p>Lucide React 0.344.0</p>
+                </div>
+                <div class="tech-item">
+                    <h4>📝 Language</h4>
+                    <p>TypeScript 5.5.3</p>
+                </div>
+                <div class="tech-item">
+                    <h4>💾 Data Storage</h4>
+                    <p>LocalStorage + IndexedDB</p>
+                </div>
+            </div>
+            
+            <h3>Development Dependencies</h3>
+            <div class="code-block">
+{
+  "devDependencies": {
+    "@eslint/js": "^9.9.1",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^9.9.1",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.11",
+    "globals": "^15.9.0",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.2"
+  }
+}
+            </div>
+        </div>
+
+        <!-- 4. File Structure -->
+        <div class="section" id="file-structure">
+            <h2>4. File Structure</h2>
+            
+            <div class="file-structure">
+neuri-health-diary/
+├── public/
+│   ├── Logo Neuri-.png
+│   ├── black_circle_360x360.png
+│   └── vite.svg
+├── src/
+│   ├── components/
+│   │   ├── AnimatedButton.tsx
+│   │   ├── EmotionSelector.tsx
+│   │   ├── Header.tsx
+│   │   ├── LanguageSwitcher.tsx
+│   │   ├── MultiProfileSelector.tsx
+│   │   ├── NotificationSettings.tsx
+│   │   ├── OfflineIndicator.tsx
+│   │   ├── SuccessAnimation.tsx
+│   │   ├── SymptomSelector.tsx
+│   │   └── VoiceAgent.tsx
+│   ├── context/
+│   │   ├── AuthContext.tsx
+│   │   ├── DiaryContext.tsx
+│   │   └── LanguageContext.tsx
+│   ├── pages/
+│   │   ├── AddEntry.tsx
+│   │   ├── Home.tsx
+│   │   ├── Landing.tsx
+│   │   ├── Login.tsx
+│   │   ├── Profile.tsx
+│   │   ├── Register.tsx
+│   │   ├── Reports.tsx
+│   │   ├── Settings.tsx
+│   │   └── ViewEntries.tsx
+│   ├── services/
+│   │   ├── AIPatternAnalyzer.ts
+│   │   ├── VoiceService.ts
+│   │   ├── api.ts
+│   │   ├── localStorageService.ts
+│   │   ├── notificationService.ts
+│   │   ├── offlineService.ts
+│   │   └── pdfService.ts
+│   ├── types/
+│   │   └── index.ts
+│   ├── utils/
+│   │   ├── dateUtils.ts
+│   │   └── soundUtils.ts
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── docs/
+│   └── neuri-code-manual.html
+├── package.json
+├── tsconfig.json
+├── tailwind.config.js
+├── vite.config.ts
+└── README.md
+            </div>
+            
+            <h3>Directory Explanations</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📁 /components</h4>
+                    <p>Reusable UI components with specific functionality</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📁 /context</h4>
+                    <p>React Context providers for global state management</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📁 /pages</h4>
+                    <p>Full page components representing different app views</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📁 /services</h4>
+                    <p>Business logic, API calls, and external integrations</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📁 /types</h4>
+                    <p>TypeScript type definitions and interfaces</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📁 /utils</h4>
+                    <p>Helper functions and utility modules</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Core Components -->
+        <div class="section" id="core-components">
+            <h2>5. Core Components</h2>
+            
+            <h3>AnimatedButton.tsx</h3>
+            <p>A reusable button component with smooth animations and sound effects.</p>
+            <div class="code-block">
+interface AnimatedButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+  type?: 'button' | 'submit';
+  disabled?: boolean;
+  variant?: 'primary' | 'secondary' | 'success' | 'emotion' | 'symptom';
+  isSelected?: boolean;
+}
+            </div>
+            <div class="info">
+                <strong>Key Features:</strong>
+                <ul>
+                    <li>Multiple visual variants for different use cases</li>
+                    <li>Integrated sound feedback using soundManager</li>
+                    <li>Smooth hover and click animations</li>
+                    <li>Accessibility-friendly focus states</li>
+                </ul>
+            </div>
+            
+            <h3>EmotionSelector.tsx</h3>
+            <p>Interactive component for selecting emotional states with emoji representations.</p>
+            <div class="code-block">
+const emotions: EmotionOption[] = [
+  { value: 'very-happy', emoji: '😊', label: t('emotion.veryHappy'), color: 'bg-green-100...' },
+  { value: 'happy', emoji: '🙂', label: t('emotion.happy'), color: 'bg-lime-100...' },
+  { value: 'neutral', emoji: '😐', label: t('emotion.neutral'), color: 'bg-yellow-100...' },
+  { value: 'sad', emoji: '😢', label: t('emotion.sad'), color: 'bg-blue-100...' },
+  { value: 'angry', emoji: '😠', label: t('emotion.angry'), color: 'bg-red-100...' },
+  { value: 'scared', emoji: '😨', label: t('emotion.scared'), color: 'bg-purple-100...' },
+];
+            </div>
+            
+            <h3>SymptomSelector.tsx</h3>
+            <p>Multi-select component for tracking various symptoms with checkboxes.</p>
+            <div class="code-block">
+const symptoms: SymptomOption[] = [
+  { value: 'headache', label: t('symptom.headache') },
+  { value: 'fatigue', label: t('symptom.fatigue') },
+  { value: 'crying', label: t('symptom.crying') },
+  // ... more symptoms
+];
+            </div>
+            
+            <h3>VoiceAgent.tsx</h3>
+            <p>Advanced voice interaction component with speech recognition and synthesis.</p>
+            <div class="warning">
+                <strong>Browser Compatibility:</strong> Voice features require modern browsers with Web Speech API support (Chrome, Edge, Safari).
+            </div>
+            
+            <h3>MultiProfileSelector.tsx</h3>
+            <p>Manages multiple child profiles within a single family account.</p>
+            <div class="code-block">
+interface ChildProfile {
+  id: string;
+  name: string;
+  age: number;
+  profilePicture?: string;
+  isActive: boolean;
+}
+            </div>
+        </div>
+
+        <!-- 6. Context Providers -->
+        <div class="section" id="context-providers">
+            <h2>6. Context Providers</h2>
+            
+            <h3>AuthContext.tsx</h3>
+            <p>Manages user authentication state and profile information.</p>
+            <div class="code-block">
+interface AuthContextType extends AuthState {
+  login: (email: string, password: string) => Promise&lt;boolean&gt;;
+  register: (userData: RegisterData) => Promise&lt;boolean&gt;;
+  logout: () => void;
+  updateProfile: (userData: Partial&lt;User&gt;) => Promise&lt;boolean&gt;;
+}
+            </div>
+            
+            <h3>DiaryContext.tsx</h3>
+            <p>Handles diary entry management and data operations.</p>
+            <div class="code-block">
+interface DiaryContextType {
+  entries: DailyEntry[];
+  addEntry: (entry: Omit&lt;DailyEntry, 'id' | 'createdAt' | 'userId'&gt;) => Promise&lt;void&gt;;
+  updateEntry: (id: string, entry: Partial&lt;DailyEntry&gt;) => Promise&lt;void&gt;;
+  deleteEntry: (id: string) => Promise&lt;void&gt;;
+  getEntryByDate: (date: string) => DailyEntry | undefined;
+  refreshEntries: () => Promise&lt;void&gt;;
+  isLoading: boolean;
+}
+            </div>
+            
+            <h3>LanguageContext.tsx</h3>
+            <p>Provides internationalization support with dynamic language switching.</p>
+            <div class="code-block">
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string) => string;
+}
+
+// Translation dictionary structure
+const translations: Record&lt;Language, Record&lt;string, string&gt;&gt; = {
+  es: { /* Spanish translations */ },
+  en: { /* English translations */ }
+};
+            </div>
+            
+            <div class="success">
+                <strong>Translation Coverage:</strong> The application includes 100+ translation keys covering all UI elements, messages, and user interactions.
+            </div>
+        </div>
+
+        <!-- 7. Services -->
+        <div class="section" id="services">
+            <h2>7. Services & Utilities</h2>
+            
+            <h3>localStorageService.ts</h3>
+            <p>Comprehensive data persistence layer using browser localStorage.</p>
+            <div class="code-block">
+class LocalStorageService {
+  // Authentication methods
+  async login(email: string, password: string): Promise&lt;{user: User; token: string}&gt;
+  async register(userData: RegisterData): Promise&lt;{user: User; token: string}&gt;
+  
+  // Profile-specific diary methods
+  async getEntriesForProfile(profileId: string): Promise&lt;{entries: DailyEntry[]}&gt;
+  async createEntryForProfile(entryData: EntryData, profileId: string): Promise&lt;{entry: DailyEntry}&gt;
+  
+  // Demo data management
+  initializeDemoData(): void
+  ensureDemoDataExists(): void
+}
+            </div>
+            
+            <h3>AIPatternAnalyzer.ts</h3>
+            <p>Intelligent analysis service for detecting health patterns and trends.</p>
+            <div class="code-block">
+export class AIPatternAnalyzer {
+  analyzePatterns(entries: DailyEntry[]): PatternAnalysis {
+    // Analyzes seizure patterns, emotional trends, symptom correlations
+    return {
+      seizurePatterns: this.analyzeSeizurePatterns(entries),
+      emotionalPatterns: this.analyzeEmotionalPatterns(entries),
+      symptomPatterns: this.analyzeSymptomPatterns(entries),
+      insights: this.generateInsights(...),
+      recommendations: this.generateRecommendations(...)
+    };
+  }
+}
+            </div>
+            
+            <h3>VoiceService.ts</h3>
+            <p>Speech synthesis and recognition service for voice interactions.</p>
+            <div class="code-block">
+export class VoiceService {
+  private synthesis: SpeechSynthesis;
+  private voice: SpeechSynthesisVoice | null = null;
+  
+  async speak(text: string): Promise&lt;void&gt; {
+    // Configures voice for child-friendly tone
+    utterance.rate = 0.8;    // Slightly slower
+    utterance.pitch = 1.2;   // Slightly higher pitch
+    utterance.volume = 0.8;  // Gentle volume
+  }
+}
+            </div>
+            
+            <h3>pdfService.ts</h3>
+            <p>Medical report generation service with professional formatting.</p>
+            <div class="code-block">
+class PDFService {
+  async generateMedicalReport(data: ReportData): Promise&lt;Blob&gt; {
+    // Creates comprehensive HTML report with:
+    // - Patient information
+    // - Statistical summaries
+    // - Detailed daily entries
+    // - Medical-grade formatting
+  }
+}
+            </div>
+            
+            <h3>dateUtils.ts</h3>
+            <p>Localized date formatting and manipulation utilities.</p>
+            <div class="code-block">
+export const formatDisplayDate = (dateString: string, locale?: string): string => {
+  const date = new Date(dateString + 'T00:00:00');
+  const currentLocale = locale || 'es-ES';
+  
+  return date.toLocaleDateString(currentLocale, {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+
+export const getLocaleFromLanguage = (language: 'es' | 'en'): string => {
+  return language === 'es' ? 'es-ES' : 'en-US';
+};
+            </div>
+        </div>
+
+        <!-- 8. Pages -->
+        <div class="section" id="pages">
+            <h2>8. Page Components</h2>
+            
+            <h3>Landing.tsx</h3>
+            <p>Marketing landing page with feature highlights and call-to-action.</p>
+            <ul>
+                <li>Hero section with value proposition</li>
+                <li>Feature grid with benefits</li>
+                <li>User testimonials</li>
+                <li>Clear registration flow</li>
+            </ul>
+            
+            <h3>Home.tsx</h3>
+            <p>Main dashboard showing daily status and quick statistics.</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📊 Today's Status</h4>
+                    <p>Shows if today's entry is complete or pending</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Quick Stats</h4>
+                    <p>Days recorded, seizures, seizure-free percentage</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📝 Recent Entries</h4>
+                    <p>Last 5 entries with emotional states and seizure status</p>
+                </div>
+            </div>
+            
+            <h3>AddEntry.tsx</h3>
+            <p>Comprehensive form for creating new daily health entries.</p>
+            <div class="code-block">
+// Form structure
+- Date selection (defaults to today)
+- Seizure information (yes/no + optional time)
+- Emotion selection (6 options with emojis)
+- Symptom checklist (10 common symptoms)
+- Free-text observations
+- Success animation on save
+            </div>
+            
+            <h3>ViewEntries.tsx</h3>
+            <p>Searchable and filterable list of all diary entries.</p>
+            <ul>
+                <li>Search by date or observations</li>
+                <li>Filter by seizure status</li>
+                <li>Localized date display</li>
+                <li>Detailed entry cards with all information</li>
+            </ul>
+            
+            <h3>Reports.tsx</h3>
+            <p>Advanced analytics and medical report generation.</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📊 Statistical Analysis</h4>
+                    <p>Weekly/monthly summaries with key metrics</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Trend Visualization</h4>
+                    <p>Emotional patterns and symptom frequency charts</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📄 Medical Reports</h4>
+                    <p>Professional PDF reports for healthcare providers</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. Internationalization -->
+        <div class="section" id="internationalization">
+            <h2>9. Internationalization (i18n)</h2>
+            
+            <h3>Language Support</h3>
+            <p>The application provides complete bilingual support for Spanish and English.</p>
+            
+            <h3>Translation Architecture</h3>
+            <div class="code-block">
+// Translation key structure
+const translations = {
+  es: {
+    'nav.home': 'Inicio',
+    'nav.add': 'Agregar',
+    'emotion.happy': 'Feliz',
+    'symptom.headache': 'Dolor de cabeza',
+    // ... 100+ keys
+  },
+  en: {
+    'nav.home': 'Home',
+    'nav.add': 'Add',
+    'emotion.happy': 'Happy',
+    'symptom.headache': 'Headache',
+    // ... 100+ keys
+  }
+};
+            </div>
+            
+            <h3>Usage Pattern</h3>
+            <div class="code-block">
+// In components
+const { t, language } = useLanguage();
+
+// Translate text
+&lt;h1&gt;{t('home.welcome')}&lt;/h1&gt;
+
+// Get locale for date formatting
+const locale = getLocaleFromLanguage(language);
+const formattedDate = formatDisplayDate(date, locale);
+            </div>
+            
+            <h3>Date Localization</h3>
+            <div class="success">
+                <strong>Fixed Issue:</strong> Dates now properly respect the selected language, showing in Spanish format when Spanish is selected and English format when English is selected.
+            </div>
+            
+            <div class="code-block">
+// Spanish: "lunes, 15 de enero de 2024"
+// English: "Monday, January 15, 2024"
+            </div>
+        </div>
+
+        <!-- 10. Data Management -->
+        <div class="section" id="data-management">
+            <h2>10. Data Management</h2>
+            
+            <h3>Data Storage Strategy</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🏠 LocalStorage</h4>
+                    <p>Primary storage for user data and preferences</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💾 IndexedDB</h4>
+                    <p>Offline support and large data handling</p>
+                </div>
+                <div class="feature-card">
+                    <h4>☁️ Supabase Ready</h4>
+                    <p>Cloud sync infrastructure prepared for future</p>
+                </div>
+            </div>
+            
+            <h3>Data Models</h3>
+            <div class="code-block">
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  childName: string;
+  childAge: number;
+  createdAt: Date;
+}
+
+interface DailyEntry {
+  id: string;
+  date: string;
+  hadSeizure: boolean;
+  seizureTime?: string;
+  symptoms: string[];
+  emotion: string;
+  observations: string;
+  createdAt: Date;
+  userId: string;
+  profileId?: string;
+}
+
+interface ChildProfile {
+  id: string;
+  name: string;
+  age: number;
+  profilePicture?: string;
+  isActive: boolean;
+}
+            </div>
+            
+            <h3>Multi-Profile Data Isolation</h3>
+            <div class="code-block">
+// Data is stored per profile to prevent cross-contamination
+localStorage.setItem(`neuri-entries-${userId}-${profileId}`, JSON.stringify(entries));
+localStorage.setItem(`neuri-profiles-${userId}`, JSON.stringify(profiles));
+localStorage.setItem('neuri-active-profile', activeProfileId);
+            </div>
+            
+            <h3>Demo Data</h3>
+            <div class="info">
+                <strong>Demo Account:</strong> The application includes a comprehensive demo account with 60+ days of realistic health data across multiple profiles, showcasing all features.
+                <br><br>
+                <strong>Credentials:</strong> demo@neuri.com / demo123
+            </div>
+        </div>
+
+        <!-- 11. Features -->
+        <div class="section" id="features">
+            <h2>11. Key Features</h2>
+            
+            <h3>Health Tracking</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>😊 Emotional States</h4>
+                    <p>6 emotion levels with emoji representations</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Seizure Monitoring</h4>
+                    <p>Binary tracking with optional time recording</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🩺 Symptom Tracking</h4>
+                    <p>10 common symptoms with multi-select capability</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📝 Observations</h4>
+                    <p>Free-text notes for additional context</p>
+                </div>
+            </div>
+            
+            <h3>Advanced Features</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎤 Voice Assistant</h4>
+                    <p>Speech recognition for hands-free data entry</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🧠 AI Analysis</h4>
+                    <p>Pattern recognition and health insights</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Medical Reports</h4>
+                    <p>Professional PDF reports for doctors</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔔 Notifications</h4>
+                    <p>Daily reminders and pattern alerts</p>
+                </div>
+            </div>
+            
+            <h3>User Experience</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎨 Child-Friendly Design</h4>
+                    <p>Warm colors, large buttons, emoji interactions</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 Responsive Layout</h4>
+                    <p>Works perfectly on mobile, tablet, and desktop</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔊 Sound Feedback</h4>
+                    <p>Audio cues for interactions and success states</p>
+                </div>
+                <div class="feature-card">
+                    <h4>✨ Smooth Animations</h4>
+                    <p>Gentle transitions and micro-interactions</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. Deployment -->
+        <div class="section" id="deployment">
+            <h2>12. Deployment & Build</h2>
+            
+            <h3>Build Configuration</h3>
+            <div class="code-block">
+// vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  optimizeDeps: {
+    exclude: ['lucide-react'],
+  }
+});
+            </div>
+            
+            <h3>Build Commands</h3>
+            <div class="code-block">
+# Development server
+npm run dev
+
+# Production build
+npm run build
+
+# Preview production build
+npm run preview
+
+# Linting
+npm run lint
+            </div>
+            
+            <h3>Environment Variables</h3>
+            <div class="code-block">
+# .env (for future Supabase integration)
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+            </div>
+            
+            <h3>Deployment Targets</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🌐 Static Hosting</h4>
+                    <p>Netlify, Vercel, GitHub Pages</p>
+                </div>
+                <div class="feature-card">
+                    <h4>☁️ Cloud Platforms</h4>
+                    <p>AWS S3, Google Cloud Storage</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🐳 Containerized</h4>
+                    <p>Docker with nginx for production</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. Troubleshooting -->
+        <div class="section" id="troubleshooting">
+            <h2>13. Troubleshooting</h2>
+            
+            <h3>Common Issues</h3>
+            
+            <h4>🔧 Translation Keys Not Displaying</h4>
+            <div class="warning">
+                <strong>Problem:</strong> UI shows "entries.title" instead of translated text.
+                <br><br>
+                <strong>Solution:</strong> Ensure LanguageProvider wraps the entire app and translation keys exist in both language dictionaries.
+            </div>
+            
+            <h4>📅 Dates in Wrong Language</h4>
+            <div class="warning">
+                <strong>Problem:</strong> Dates show in Spanish when English is selected.
+                <br><br>
+                <strong>Solution:</strong> Use getLocaleFromLanguage() helper and pass locale to formatDisplayDate().
+            </div>
+            
+            <h4>👥 Profile Switching Issues</h4>
+            <div class="warning">
+                <strong>Problem:</strong> Data doesn't update when switching profiles.
+                <br><br>
+                <strong>Solution:</strong> Ensure active profile ID is stored in localStorage and DiaryContext refreshes on profile change.
+            </div>
+            
+            <h3>Debug Tools</h3>
+            <div class="code-block">
+// Enable debug logging
+localStorage.setItem('neuri-debug', 'true');
+
+// Check current profile
+console.log('Active profile:', localStorage.getItem('neuri-active-profile'));
+
+// View stored entries
+console.log('Entries:', localStorage.getItem('neuri-entries-demo-user-default'));
+            </div>
+            
+            <h3>Performance Optimization</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>⚡ Code Splitting</h4>
+                    <p>Lazy load pages and heavy components</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 Memoization</h4>
+                    <p>Use React.memo for expensive components</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📦 Bundle Analysis</h4>
+                    <p>Use vite-bundle-analyzer to identify large dependencies</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 14. Future Enhancements -->
+        <div class="section" id="future-enhancements">
+            <h2>14. Future Enhancements</h2>
+            
+            <h3>Planned Features</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>☁️ Cloud Sync</h4>
+                    <p>Supabase integration for data backup and multi-device access</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Advanced Analytics</h4>
+                    <p>Machine learning for seizure prediction and trigger identification</p>
+                </div>
+                <div class="feature-card">
+                    <h4>👨‍⚕️ Healthcare Integration</h4>
+                    <p>Direct sharing with medical professionals</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 Mobile App</h4>
+                    <p>React Native version for iOS and Android</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🌍 More Languages</h4>
+                    <p>French, Portuguese, German language support</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎮 Gamification</h4>
+                    <p>Rewards and achievements for consistent logging</p>
+                </div>
+            </div>
+            
+            <h3>Technical Improvements</h3>
+            <div class="changelog">
+                <h4>Version 1.1.0 (Planned)</h4>
+                <ul>
+                    <li>Supabase backend integration</li>
+                    <li>Real-time data synchronization</li>
+                    <li>Enhanced offline capabilities</li>
+                    <li>Push notifications</li>
+                </ul>
+            </div>
+            
+            <div class="changelog">
+                <h4>Version 1.2.0 (Planned)</h4>
+                <ul>
+                    <li>Advanced pattern recognition AI</li>
+                    <li>Medication tracking</li>
+                    <li>Photo attachments for entries</li>
+                    <li>Export to popular health apps</li>
+                </ul>
+            </div>
+            
+            <h3>Architecture Evolution</h3>
+            <div class="code-block">
+// Future state management with Zustand
+import { create } from 'zustand';
+
+interface AppStore {
+  user: User | null;
+  entries: DailyEntry[];
+  activeProfile: string;
+  language: Language;
+  // Actions
+  setUser: (user: User) => void;
+  addEntry: (entry: DailyEntry) => void;
+  switchProfile: (profileId: string) => void;
+}
+
+const useAppStore = create&lt;AppStore&gt;((set) => ({
+  // Implementation
+}));
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; padding-top: 30px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280;">
+            <p><strong>Neuri Health Diary - Code Manual</strong></p>
+            <p>Generated on ${new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}</p>
+            <p><em>This manual provides comprehensive documentation for developers working on the Neuri Health Diary application.</em></p>
+            <p style="margin-top: 20px; font-size: 0.9em;">
+                💝 Built with love for families managing children's health conditions
+            </p>
+        </div>
+    </div>
+</body>
+</html>
