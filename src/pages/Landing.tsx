@@ -290,7 +290,7 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
               <div className="w-10 h-10">
                 <img 
-                  src="/Logo Neuri.png" 
+                  src={logoneuri} 
                   alt="Neuri Logo" 
                   className="w-full h-full object-contain"
                   onError={(e) => {
@@ -312,7 +312,7 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
             
             <div className="text-center md:text-right">
               <p className="text-gray-400 text-sm">
-                © 2024 Neuri. Hecho con 💝 para las familias.
+                © 2025 Neuri. Hecho con 💝 para las familias.
               </p>
             </div>
           </div>
