@@ -13,15 +13,15 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
       <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4 lg:space-x-6">
-              {/* Bolt.new logo */}
+            {/*<div className="flex items-center space-x-4 lg:space-x-6">
+              {/* Bolt.new logo}
               <a 
                 href="https://bolt.new/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="hover:opacity-80 transition-opacity duration-200"
                 title="Powered by bolt.new"
-              >
+              >*/}<img src="/neuri-logo.png" alt="Neuri Logo" style={{ height: "40px" }} />
                 <div className="w-14 h-14 lg:w-16 lg:h-16">
                   <img 
                     src="/black_circle_360x360 bolt.png" 
