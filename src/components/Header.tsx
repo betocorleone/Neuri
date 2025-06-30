@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ currentView = 'home', onViewChange }) =
           <div className="flex items-center justify-center lg:justify-start space-x-3">
             <div className="w-12 h-12 lg:w-16 lg:h-16">
               <img 
-                src="/Logo Neuri-.png" 
+                src="/Logo Neuri.png" 
                 alt="Neuri Logo" 
                 className="w-full h-full object-contain"
                 onError={(e) => {
