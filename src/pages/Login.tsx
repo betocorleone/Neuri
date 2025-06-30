@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import logoneuri from '../assets/Logo Neuri-.png';
+import logobolt from '../assets/black_circle_360x360 bolt.png';
 
 interface LoginProps {
   onSuccess: () => void;
@@ -65,7 +67,7 @@ const Login: React.FC<LoginProps> = ({ onSuccess, onRegister, onBackToLanding })
         <div className="text-center mb-8">
           <div className="w-16 h-16 mx-auto mb-4">
             <img 
-              src="/Logo Neuri.png" 
+              src={logoneuri}
               alt="Neuri Logo" 
               className="w-full h-full object-contain"
               onError={(e) => {
