@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { useDiary } from '../context/DiaryContext';
+import { useLanguage } from '../context/LanguageContext';
 import { BarChart3, Calendar, Download, TrendingUp, FileText } from 'lucide-react';
-import { getWeekRange, getMonthRange, formatDisplayDate } from '../utils/dateUtils';
+import { getWeekRange, getMonthRange, formatDisplayDate, getLocaleFromLanguage } from '../utils/dateUtils';
 import { pdfService } from '../services/pdfService';
 import { useAuth } from '../context/AuthContext';
 
 const Reports: React.FC = () => {
   const { user } = useAuth();
   const { entries } = useDiary();
+  const { t, language } = useLanguage();
   const [reportType, setReportType] = useState<'week' | 'month'>('month'); // Default to month to see more data
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  // Get the current locale for date formatting
+  const locale = getLocaleFromLanguage(language);
 
   // Get active profile information
   const getActiveProfile = () => {
@@ -85,12 +90,12 @@ const Reports: React.FC = () => {
 
   const getEmotionStats = (entries: any[]) => {
     const emotions = {
-      'very-happy': { label: 'Muy Feliz', emoji: '😊', count: 0 },
-      'happy': { label: 'Feliz', emoji: '🙂', count: 0 },
-      'neutral': { label: 'Normal', emoji: '😐', count: 0 },
-      'sad': { label: 'Triste', emoji: '😢', count: 0 },
-      'angry': { label: 'Enojada', emoji: '😠', count: 0 },
-      'scared': { label: 'Asustada', emoji: '😨', count: 0 }
+      'very-happy': { label: t('emotion.veryHappy'), emoji: '😊', count: 0 },
+      'happy': { label: t('emotion.happy'), emoji: '🙂', count: 0 },
+      'neutral': { label: t('emotion.neutral'), emoji: '😐', count: 0 },
+      'sad': { label: t('emotion.sad'), emoji: '😢', count: 0 },
+      'angry': { label: t('emotion.angry'), emoji: '😠', count: 0 },
+      'scared': { label: t('emotion.scared'), emoji: '😨', count: 0 }
     };
 
     entries.forEach(entry => {
@@ -104,16 +109,16 @@ const Reports: React.FC = () => {
 
   const getSymptomStats = (entries: any[]) => {
     const symptoms: { [key: string]: { label: string; count: number } } = {
-      'headache': { label: 'Dolor de cabeza', count: 0 },
-      'fatigue': { label: 'Cansancio', count: 0 },
-      'crying': { label: 'Llanto', count: 0 },
-      'irritability': { label: 'Irritabilidad', count: 0 },
-      'confusion': { label: 'Confusión', count: 0 },
-      'nausea': { label: 'Náuseas', count: 0 },
-      'dizziness': { label: 'Mareos', count: 0 },
-      'sleep-issues': { label: 'Problemas de sueño', count: 0 },
-      'appetite-loss': { label: 'Pérdida de apetito', count: 0 },
-      'memory-issues': { label: 'Problemas de memoria', count: 0 }
+      'headache': { label: t('symptom.headache'), count: 0 },
+      'fatigue': { label: t('symptom.fatigue'), count: 0 },
+      'crying': { label: t('symptom.crying'), count: 0 },
+      'irritability': { label: t('symptom.irritability'), count: 0 },
+      'confusion': { label: t('symptom.confusion'), count: 0 },
+      'nausea': { label: t('symptom.nausea'), count: 0 },
+      'dizziness': { label: t('symptom.dizziness'), count: 0 },
+      'sleep-issues': { label: t('symptom.sleepIssues'), count: 0 },
+      'appetite-loss': { label: t('symptom.appetiteLoss'), count: 0 },
+      'memory-issues': { label: t('symptom.memoryIssues'), count: 0 }
     };
 
     entries.forEach(entry => {
@@ -134,35 +139,35 @@ const Reports: React.FC = () => {
     const activeProfile = getActiveProfile();
     
     const reportContent = `
-REPORTE DE SALUD - ${reportType === 'week' ? 'SEMANAL' : 'MENSUAL'}
-Paciente: ${activeProfile?.name || 'N/A'}
-Período: ${formatDisplayDate(data.range.start.toISOString().split('T')[0])} - ${formatDisplayDate(data.range.end.toISOString().split('T')[0])}
+${t('reports.title')} - ${reportType === 'week' ? t('reports.weekly') : t('reports.monthly')}
+${t('profile.childName')}: ${activeProfile?.name || 'N/A'}
+${t('reports.period')} ${formatDisplayDate(data.range.start.toISOString().split('T')[0], locale)} - ${formatDisplayDate(data.range.end.toISOString().split('T')[0], locale)}
 
-RESUMEN GENERAL:
-- Total de días registrados: ${data.totalDays}
-- Días con convulsiones: ${data.seizureDays}
-- Días sin convulsiones: ${data.totalDays - data.seizureDays}
-- Porcentaje de días sin convulsiones: ${data.totalDays > 0 ? Math.round(((data.totalDays - data.seizureDays) / data.totalDays) * 100) : 0}%
+${t('reports.title').toUpperCase()}:
+- ${t('reports.daysRecorded')}: ${data.totalDays}
+- ${t('reports.daysWithSeizures')}: ${data.seizureDays}
+- ${t('reports.daysWithoutSeizures')}: ${data.totalDays - data.seizureDays}
+- ${t('reports.seizurePercentage')}: ${data.totalDays > 0 ? Math.round(((data.totalDays - data.seizureDays) / data.totalDays) * 100) : 0}%
 
-ESTADO EMOCIONAL:
+${t('reports.emotionalState')}:
 ${Object.entries(data.emotionStats)
   .filter(([_, data]) => data.count > 0)
-  .map(([_, data]) => `- ${data.emoji} ${data.label}: ${data.count} días`)
+  .map(([_, data]) => `- ${data.emoji} ${data.label}: ${data.count} ${language === 'es' ? 'días' : 'days'}`)
   .join('\n')}
 
-SÍNTOMAS MÁS FRECUENTES:
-${data.symptomStats.map(([_, data]) => `- ${data.label}: ${data.count} veces`).join('\n')}
+${t('reports.mostFrequentSymptoms')}:
+${data.symptomStats.map(([_, data]) => `- ${data.label}: ${data.count} ${language === 'es' ? 'veces' : 'times'}`).join('\n')}
 
-DETALLES POR DÍA:
+${language === 'es' ? 'DETALLES POR DÍA' : 'DAILY DETAILS'}:
 ${data.entries.map(entry => `
-${formatDisplayDate(entry.date)}:
-- Estado emocional: ${data.emotionStats[entry.emotion as keyof typeof data.emotionStats]?.label || entry.emotion}
-- Convulsión: ${entry.hadSeizure ? 'Sí' + (entry.seizureTime ? ` (${entry.seizureTime})` : '') : 'No'}
-- Síntomas: ${entry.symptoms.length > 0 ? entry.symptoms.map((s: string) => {
+${formatDisplayDate(entry.date, locale)}:
+- ${t('home.emotionalState')}: ${data.emotionStats[entry.emotion as keyof typeof data.emotionStats]?.label || entry.emotion}
+- ${t('home.seizure')}: ${entry.hadSeizure ? t('common.yes') + (entry.seizureTime ? ` (${entry.seizureTime})` : '') : t('common.no')}
+- ${language === 'es' ? 'Síntomas' : 'Symptoms'}: ${entry.symptoms.length > 0 ? entry.symptoms.map((s: string) => {
   const symptomData = getSymptomStats([{symptoms: [s]}]);
   return symptomData[0]?.[1]?.label || s;
-}).join(', ') : 'Ninguno'}
-- Observaciones: ${entry.observations || 'Sin observaciones'}
+}).join(', ') : t('common.none')}
+- ${t('entries.observations')}: ${entry.observations || (language === 'es' ? 'Sin observaciones' : 'No observations')}
 `).join('\n')}
     `;
 
@@ -170,7 +175,7 @@ ${formatDisplayDate(entry.date)}:
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `reporte-salud-${activeProfile?.name || 'paciente'}-${reportType}-${selectedDate}.txt`;
+    a.download = `${language === 'es' ? 'reporte-salud' : 'health-report'}-${activeProfile?.name || 'patient'}-${reportType}-${selectedDate}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -182,7 +187,7 @@ ${formatDisplayDate(entry.date)}:
 
     const activeProfile = getActiveProfile();
     if (!activeProfile) {
-      alert('No se pudo obtener la información del perfil activo');
+      alert(t('profiles.noProfiles'));
       return;
     }
 
@@ -197,7 +202,7 @@ ${formatDisplayDate(entry.date)}:
           childAge: activeProfile.age    // Use active profile age
         },
         entries: data.entries,
-        period: reportType === 'week' ? 'Semanal' : 'Mensual',
+        period: reportType === 'week' ? t('reports.weekly') : t('reports.monthly'),
         startDate: data.range.start.toISOString().split('T')[0],
         endDate: data.range.end.toISOString().split('T')[0],
         stats: {
@@ -209,17 +214,17 @@ ${formatDisplayDate(entry.date)}:
         }
       };
 
-      const filename = `reporte-medico-${activeProfile.name}-${reportType}-${selectedDate}`;
+      const filename = `${language === 'es' ? 'reporte-medico' : 'medical-report'}-${activeProfile.name}-${reportType}-${selectedDate}`;
       const success = await pdfService.downloadReport(reportData, filename);
       
       if (success) {
-        alert('Reporte médico generado exitosamente');
+        alert(t('reports.reportGenerated'));
       } else {
-        alert('Error al generar el reporte médico');
+        alert(t('reports.reportError'));
       }
     } catch (error) {
       console.error('Error generating medical PDF:', error);
-      alert('Error al generar el reporte médico');
+      alert(t('reports.reportError'));
     } finally {
       setIsGeneratingPDF(false);
     }
@@ -236,9 +241,9 @@ ${formatDisplayDate(entry.date)}:
             <BarChart3 className="h-6 w-6 lg:h-8 lg:w-8 text-white" />
           </div>
           <div className="text-center sm:text-left">
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">Reportes de Salud</h1>
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">{t('reports.title')}</h1>
             <p className="text-gray-600">
-              Análisis detallado para {activeProfile?.name || 'el paciente'}
+              {t('reports.subtitle')} {activeProfile?.name || t('profile.childName')}
             </p>
           </div>
         </div>
@@ -254,7 +259,7 @@ ${formatDisplayDate(entry.date)}:
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Semanal
+              {t('reports.weekly')}
             </button>
             <button
               onClick={() => setReportType('month')}
@@ -264,7 +269,7 @@ ${formatDisplayDate(entry.date)}:
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Mensual
+              {t('reports.monthly')}
             </button>
           </div>
           
@@ -284,7 +289,7 @@ ${formatDisplayDate(entry.date)}:
               className="flex items-center justify-center space-x-2 bg-green-500 text-white px-3 lg:px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm lg:text-base"
             >
               <Download className="h-4 w-4 lg:h-5 lg:w-5" />
-              <span>Descargar TXT</span>
+              <span>{t('reports.downloadTxt')}</span>
             </button>
 
             <button
@@ -293,21 +298,21 @@ ${formatDisplayDate(entry.date)}:
               className="flex items-center justify-center space-x-2 bg-blue-500 text-white px-3 lg:px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm lg:text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FileText className="h-4 w-4 lg:h-5 lg:w-5" />
-              <span>{isGeneratingPDF ? 'Generando...' : 'Reporte Médico'}</span>
+              <span>{isGeneratingPDF ? t('reports.generating') : t('reports.medicalReport')}</span>
             </button>
           </div>
         </div>
 
         <div className="text-xs lg:text-sm text-gray-600 mb-2">
-          Período: {formatDisplayDate(data.range.start.toISOString().split('T')[0])} - {formatDisplayDate(data.range.end.toISOString().split('T')[0])}
+          {t('reports.period')} {formatDisplayDate(data.range.start.toISOString().split('T')[0], locale)} - {formatDisplayDate(data.range.end.toISOString().split('T')[0], locale)}
         </div>
         
         {/* Debug info */}
         <div className="text-xs text-blue-600 mb-4">
-          📊 Total de entradas en la base de datos: {entries.length} | Filtradas para este período: {data.totalDays}
+          📊 {t('reports.totalEntries')} {entries.length} | {t('reports.filteredEntries')} {data.totalDays}
           {activeProfile && (
             <span className="ml-4">
-              👤 Perfil activo: {activeProfile.name} ({activeProfile.age} años)
+              👤 {t('reports.activeProfile')} {activeProfile.name} ({activeProfile.age} {t('reports.years')})
             </span>
           )}
         </div>
@@ -320,7 +325,7 @@ ${formatDisplayDate(entry.date)}:
             <Calendar className="h-6 w-6 lg:h-8 lg:w-8 text-blue-600" />
           </div>
           <h3 className="text-xl lg:text-2xl font-bold text-gray-800">{data.totalDays}</h3>
-          <p className="text-xs lg:text-base text-gray-600">Días registrados</p>
+          <p className="text-xs lg:text-base text-gray-600">{t('reports.daysRecorded')}</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-4 lg:p-6 text-center">
@@ -328,7 +333,7 @@ ${formatDisplayDate(entry.date)}:
             <span className="text-xl lg:text-2xl">⚡</span>
           </div>
           <h3 className="text-xl lg:text-2xl font-bold text-gray-800">{data.seizureDays}</h3>
-          <p className="text-xs lg:text-base text-gray-600">Días con convulsiones</p>
+          <p className="text-xs lg:text-base text-gray-600">{t('reports.daysWithSeizures')}</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-4 lg:p-6 text-center">
@@ -336,7 +341,7 @@ ${formatDisplayDate(entry.date)}:
             <TrendingUp className="h-6 w-6 lg:h-8 lg:w-8 text-green-600" />
           </div>
           <h3 className="text-xl lg:text-2xl font-bold text-gray-800">{data.totalDays - data.seizureDays}</h3>
-          <p className="text-xs lg:text-base text-gray-600">Días sin convulsiones</p>
+          <p className="text-xs lg:text-base text-gray-600">{t('reports.daysWithoutSeizures')}</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-4 lg:p-6 text-center">
@@ -346,14 +351,14 @@ ${formatDisplayDate(entry.date)}:
           <h3 className="text-xl lg:text-2xl font-bold text-gray-800">
             {data.totalDays > 0 ? Math.round(((data.totalDays - data.seizureDays) / data.totalDays) * 100) : 0}%
           </h3>
-          <p className="text-xs lg:text-base text-gray-600">Días sin convulsiones</p>
+          <p className="text-xs lg:text-base text-gray-600">{t('reports.seizurePercentage')}</p>
         </div>
       </div>
 
       {/* Emotion and Symptom Analysis */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-6 lg:mb-8">
         <div className="bg-white rounded-2xl shadow-lg p-4 lg:p-6">
-          <h3 className="text-lg lg:text-xl font-bold text-gray-800 mb-4 lg:mb-6">Estado Emocional</h3>
+          <h3 className="text-lg lg:text-xl font-bold text-gray-800 mb-4 lg:mb-6">{t('reports.emotionalState')}</h3>
           <div className="space-y-3 lg:space-y-4">
             {Object.entries(data.emotionStats)
               .filter(([_, data]) => data.count > 0)
@@ -367,7 +372,7 @@ ${formatDisplayDate(entry.date)}:
                   <div className="flex items-center space-x-2">
                     <div className="bg-gray-200 rounded-full h-2 w-16 lg:w-24">
                       <div
-                        className="bg-purple-500 h-2 rounded-full"
+                        className="bg-purple-500 h-2 rounded-full transition-all duration-200"
                         style={{ width: `${data.totalDays > 0 ? (emotionData.count / data.totalDays) * 100 : 0}%` }}
                       />
                     </div>
@@ -380,7 +385,7 @@ ${formatDisplayDate(entry.date)}:
 
         {/* Symptom Analysis */}
         <div className="bg-white rounded-2xl shadow-lg p-4 lg:p-6">
-          <h3 className="text-lg lg:text-xl font-bold text-gray-800 mb-4 lg:mb-6">Síntomas Más Frecuentes</h3>
+          <h3 className="text-lg lg:text-xl font-bold text-gray-800 mb-4 lg:mb-6">{t('reports.mostFrequentSymptoms')}</h3>
           <div className="space-y-3 lg:space-y-4">
             {data.symptomStats.slice(0, 8).map(([symptom, symptomData]) => (
               <div key={symptom} className="flex items-center justify-between">
@@ -388,7 +393,7 @@ ${formatDisplayDate(entry.date)}:
                 <div className="flex items-center space-x-2">
                   <div className="bg-gray-200 rounded-full h-2 w-16 lg:w-24">
                     <div
-                      className="bg-red-500 h-2 rounded-full"
+                      className="bg-red-500 h-2 rounded-full transition-all duration-200"
                       style={{ width: `${data.totalDays > 0 ? Math.min((symptomData.count / data.totalDays) * 100, 100) : 0}%` }}
                     />
                   </div>
@@ -397,7 +402,7 @@ ${formatDisplayDate(entry.date)}:
               </div>
             ))}
             {data.symptomStats.length === 0 && (
-              <p className="text-gray-500 text-center py-4 text-sm lg:text-base">No se registraron síntomas en este período</p>
+              <p className="text-gray-500 text-center py-4 text-sm lg:text-base">{t('reports.noSymptomsInPeriod')}</p>
             )}
           </div>
         </div>
@@ -407,7 +412,7 @@ ${formatDisplayDate(entry.date)}:
       {data.entries.length > 0 && (
         <div className="bg-white rounded-2xl shadow-lg p-4 lg:p-6">
           <h3 className="text-lg lg:text-xl font-bold text-gray-800 mb-4 lg:mb-6">
-            Registros del Período ({data.entries.length} entradas)
+            {t('reports.periodEntries')} ({data.entries.length} {t('reports.entriesCount')})
           </h3>
           <div className="space-y-3 lg:space-y-4">
             {data.entries.slice(0, 10).map((entry) => (
@@ -418,15 +423,15 @@ ${formatDisplayDate(entry.date)}:
                       {data.emotionStats[entry.emotion as keyof typeof data.emotionStats]?.emoji || '😐'}
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-800 text-sm lg:text-base">{formatDisplayDate(entry.date)}</p>
+                      <p className="font-semibold text-gray-800 text-sm lg:text-base">{formatDisplayDate(entry.date, locale)}</p>
                       <p className="text-xs lg:text-sm text-gray-600">
-                        {entry.hadSeizure ? '⚡ Convulsión registrada' : '✅ Sin convulsiones'}
+                        {entry.hadSeizure ? t('home.seizureRegistered') : t('home.noSeizures')}
                       </p>
                     </div>
                   </div>
                   <div className="text-left sm:text-right">
                     {entry.symptoms.length > 0 && (
-                      <p className="text-xs lg:text-sm text-gray-600">{entry.symptoms.length} síntomas</p>
+                      <p className="text-xs lg:text-sm text-gray-600">{entry.symptoms.length} {t('reports.symptoms')}</p>
                     )}
                   </div>
                 </div>
@@ -436,7 +441,7 @@ ${formatDisplayDate(entry.date)}:
             {data.entries.length > 10 && (
               <div className="text-center py-4">
                 <p className="text-sm text-gray-500">
-                  Mostrando 10 de {data.entries.length} registros del período
+                  {t('reports.showingEntriesOf')} {data.entries.length} {t('reports.entriesInPeriod')}
                 </p>
               </div>
             )}
@@ -447,12 +452,12 @@ ${formatDisplayDate(entry.date)}:
       {data.entries.length === 0 && (
         <div className="bg-white rounded-2xl shadow-lg p-8 lg:p-12 text-center">
           <div className="text-4xl lg:text-6xl mb-4">📊</div>
-          <h3 className="text-xl lg:text-2xl font-bold text-gray-800 mb-2">No hay datos para este período</h3>
+          <h3 className="text-xl lg:text-2xl font-bold text-gray-800 mb-2">{t('reports.noDataForPeriod')}</h3>
           <p className="text-gray-600 text-sm lg:text-base">
-            No se encontraron registros para el período seleccionado. Intenta con otra fecha o cambia a vista mensual.
+            {t('reports.noDataDesc')}
           </p>
           <div className="mt-4 text-sm text-blue-600">
-            💡 Tip: Cambia a vista "Mensual" para ver más datos, o selecciona una fecha más reciente.
+            💡 {t('reports.tipChangeView')}
           </div>
         </div>
       )}
