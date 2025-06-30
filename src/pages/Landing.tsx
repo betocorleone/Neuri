@@ -45,18 +45,18 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
               <div className="flex items-center space-x-3">
                 <div className="w-16 h-16 lg:w-20 lg:h-20">
                   <img 
-                    src="/Logo Neuri.png" 
+                    src="src/assets/Logo Neuri.png" 
                     alt="Neuri Logo" 
                     className="w-full h-full object-contain"
-                    onError={(e) => {
+                    //onError={(e) => {
                       // Fallback to gradient circle with N
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const fallback = document.createElement('div');
-                      fallback.className = 'w-full h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center';
-                      fallback.innerHTML = '<span class="text-white text-2xl font-bold">N</span>';
-                      target.parentNode?.appendChild(fallback);
-                    }}
+                      //const target = e.target as HTMLImageElement;
+                     // target.style.display = 'none';
+                     // const fallback = document.createElement('div');
+                     // fallback.className = 'w-full h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center';
+                     // fallback.innerHTML = '<span class="text-white text-2xl font-bold">N</span>';
+                     // target.parentNode?.appendChild(fallback);
+                   // }}
                   />
                 </div>
                 <div>
