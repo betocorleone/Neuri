@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useDiary } from '../context/DiaryContext';
 import { useLanguage } from '../context/LanguageContext';
 import { Baby, Plus, User } from 'lucide-react';
 import AnimatedButton from './AnimatedButton';
@@ -19,7 +18,6 @@ interface MultiProfileSelectorProps {
 
 const MultiProfileSelector: React.FC<MultiProfileSelectorProps> = ({ onProfileChange }) => {
   const { user } = useAuth();
-  const { refreshEntries } = useDiary();
   const { t } = useLanguage();
   
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);

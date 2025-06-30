@@ -205,6 +205,7 @@ ${formatDisplayDate(entry.date, locale)}:
         period: reportType === 'week' ? t('reports.weekly') : t('reports.monthly'),
         startDate: data.range.start.toISOString().split('T')[0],
         endDate: data.range.end.toISOString().split('T')[0],
+        language: language, // Pass language to PDF service
         stats: {
           totalDays: data.totalDays,
           seizureDays: data.seizureDays,
