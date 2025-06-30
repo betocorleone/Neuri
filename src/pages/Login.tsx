@@ -68,6 +68,15 @@ const Login: React.FC<LoginProps> = ({ onSuccess, onRegister, onBackToLanding })
               src="/Logo Neuri-.png" 
               alt="Neuri Logo" 
               className="w-full h-full object-contain"
+              onError={(e) => {
+                // Fallback to gradient circle with N
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.className = 'w-full h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center';
+                fallback.innerHTML = '<span class="text-white text-xl font-bold">N</span>';
+                target.parentNode?.appendChild(fallback);
+              }}
             />
           </div>
           <h1 className="text-2xl font-bold text-gray-800 mb-2">Bienvenido de vuelta</h1>

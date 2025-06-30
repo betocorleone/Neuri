@@ -27,6 +27,15 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
                     src="/black_circle_360x360.png" 
                     alt="bolt.new" 
                     className="w-full h-full object-contain"
+                    onError={(e) => {
+                      // Fallback to a simple black circle with bolt icon
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = document.createElement('div');
+                      fallback.className = 'w-full h-full bg-black rounded-full flex items-center justify-center';
+                      fallback.innerHTML = '<span class="text-white text-2xl">⚡</span>';
+                      target.parentNode?.appendChild(fallback);
+                    }}
                   />
                 </div>
               </a>
@@ -38,6 +47,15 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
                     src="/Logo Neuri-.png" 
                     alt="Neuri Logo" 
                     className="w-full h-full object-contain"
+                    onError={(e) => {
+                      // Fallback to gradient circle with N
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = document.createElement('div');
+                      fallback.className = 'w-full h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center';
+                      fallback.innerHTML = '<span class="text-white text-2xl font-bold">N</span>';
+                      target.parentNode?.appendChild(fallback);
+                    }}
                   />
                 </div>
                 <div>
@@ -270,6 +288,15 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
                   src="/Logo Neuri-.png" 
                   alt="Neuri Logo" 
                   className="w-full h-full object-contain"
+                  onError={(e) => {
+                    // Fallback for footer logo
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'w-full h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center';
+                    fallback.innerHTML = '<span class="text-white text-sm font-bold">N</span>';
+                    target.parentNode?.appendChild(fallback);
+                  }}
                 />
               </div>
               <div>
