@@ -37,7 +37,6 @@ class NotificationService {
     const defaultOptions: NotificationOptions = {
       icon: '/Logo Neuri-.png',
       badge: '/Logo Neuri-.png',
-      vibrate: [200, 100, 200],
       ...options
     };
 

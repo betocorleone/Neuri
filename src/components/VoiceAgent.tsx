@@ -11,7 +11,7 @@ interface VoiceAgentProps {
   onNavigateToView?: (view: string) => void;
 }
 
-const VoiceAgent: React.FC<VoiceAgentProps> = ({ onEntryCreated, onNavigateToView }) => {
+const VoiceAgent: React.FC<VoiceAgentProps> = ({ onEntryCreated }) => {
   const { user } = useAuth();
   const { entries, addEntry } = useDiary();
   const [isListening, setIsListening] = useState(false);

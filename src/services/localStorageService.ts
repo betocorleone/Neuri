@@ -249,15 +249,6 @@ class LocalStorageService {
     return stored ? JSON.parse(stored) : [];
   }
 
-  // Get current date in YYYY-MM-DD format
-  private getCurrentDate(): string {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
-
   // Get date N days ago
   private getDateDaysAgo(daysAgo: number): string {
     const date = new Date();
