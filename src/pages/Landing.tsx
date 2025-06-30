@@ -1,6 +1,6 @@
 import React from 'react';
 import { Heart, Calendar, BarChart3, Shield, Users, Star } from 'lucide-react';
-import logoneuri from './assets/logo neuri-.png';
+import logoneuri from './assets/logo Neuri-.png';
 
 interface LandingProps {
   onGetStarted: () => void;
