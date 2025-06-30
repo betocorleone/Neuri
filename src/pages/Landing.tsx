@@ -24,7 +24,7 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
               >
                 <div className="w-14 h-14 lg:w-16 lg:h-16">
                   <img 
-                    src="src/assets/black_circle_360x360 bolt.png" 
+                    src="/black_circle_360x360 bolt.png" 
                     alt="bolt.new" 
                     className="w-full h-full object-contain"
                   //  onError={(e) => {
