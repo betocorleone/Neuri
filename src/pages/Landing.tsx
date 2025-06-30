@@ -2,6 +2,7 @@ import React from 'react';
 import { Heart, Calendar, BarChart3, Shield, Users, Star } from 'lucide-react';
 //import logoneuri from './assets/logo---- Neuri-.png';
 import logoneuri from '../assets/Logo Neuri-.png';
+import logobolt from '../assets/black_circle_360x360 bolt.png';
 interface LandingProps {
   onGetStarted: () => void;
   onLogin: () => void;
@@ -25,7 +26,8 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
               >
                 <div className="w-14 h-14 lg:w-16 lg:h-16">
                   <img 
-                    src="/black_circle_360x360 bolt.png" 
+                   // src="/black_circle_360x360 bolt.png" 
+                    src={logobolt} 
                     alt="bolt.new" 
                     className="w-full h-full object-contain"
                   //  onError={(e) => {
