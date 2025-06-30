@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
+    include: ['react', 'react-dom']
   },
   build: {
     outDir: 'dist',
@@ -20,8 +21,17 @@ export default defineConfig({
         }
       }
     },
-    // Ensure build doesn't fail on warnings
-    chunkSizeWarningLimit: 1000
+    // Prevent build failures on warnings
+    chunkSizeWarningLimit: 1000,
+    // Ensure proper asset handling
+    assetsDir: 'assets',
+    // Prevent memory issues during build
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    }
   },
   server: {
     port: 5173,
@@ -32,5 +42,13 @@ export default defineConfig({
     host: true
   },
   // Ensure proper base path for deployment
-  base: './'
+  base: './',
+  // Define environment variables
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+  },
+  // Ensure proper CSS handling
+  css: {
+    postcss: './postcss.config.js'
+  }
 });

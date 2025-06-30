@@ -8,6 +8,7 @@ export interface DailyEntry {
   observations: string;
   createdAt: Date;
   userId: string;
+  profileId?: string;
 }
 
 export interface EmotionOption {
@@ -38,7 +39,7 @@ export interface AuthState {
   isLoading: boolean;
 }
 
-// Extend Window interface for speech recognition
+// Speech Recognition types for better compatibility
 declare global {
   interface Window {
     SpeechRecognition: typeof SpeechRecognition;
@@ -91,3 +92,5 @@ declare global {
     new(): SpeechRecognition;
   };
 }
+
+export {};
