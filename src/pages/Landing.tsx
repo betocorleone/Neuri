@@ -24,9 +24,18 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
               >
                 <div className="w-14 h-14 lg:w-16 lg:h-16">
                   <img 
-                    src="/black_circle_360x360.png" 
+                    src="/bolt-logo.svg" 
                     alt="bolt.new" 
                     className="w-full h-full object-contain"
+                    onError={(e) => {
+                      // Fallback to a simple black circle with bolt icon
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = document.createElement('div');
+                      fallback.className = 'w-full h-full bg-black rounded-full flex items-center justify-center';
+                      fallback.innerHTML = '<span class="text-white text-2xl">⚡</span>';
+                      target.parentNode?.appendChild(fallback);
+                    }}
                   />
                 </div>
               </a>
@@ -35,9 +44,18 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
               <div className="flex items-center space-x-3">
                 <div className="w-16 h-16 lg:w-20 lg:h-20">
                   <img 
-                    src="/Logo Neuri-.png" 
+                    src="/neuri-logo.svg" 
                     alt="Neuri Logo" 
                     className="w-full h-full object-contain"
+                    onError={(e) => {
+                      // Fallback to gradient circle with N
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = document.createElement('div');
+                      fallback.className = 'w-full h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center';
+                      fallback.innerHTML = '<span class="text-white text-2xl font-bold">N</span>';
+                      target.parentNode?.appendChild(fallback);
+                    }}
                   />
                 </div>
                 <div>
@@ -267,9 +285,18 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
               <div className="w-10 h-10">
                 <img 
-                  src="/Logo Neuri-.png" 
+                  src="/neuri-logo.svg" 
                   alt="Neuri Logo" 
                   className="w-full h-full object-contain"
+                  onError={(e) => {
+                    // Fallback for footer logo
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'w-full h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center';
+                    fallback.innerHTML = '<span class="text-white text-sm font-bold">N</span>';
+                    target.parentNode?.appendChild(fallback);
+                  }}
                 />
               </div>
               <div>
