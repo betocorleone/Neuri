@@ -11,6 +11,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     minify: 'terser',
+    target: 'es2015',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -18,7 +19,9 @@ export default defineConfig({
           icons: ['lucide-react']
         }
       }
-    }
+    },
+    // Ensure build doesn't fail on warnings
+    chunkSizeWarningLimit: 1000
   },
   server: {
     port: 5173,
@@ -27,5 +30,7 @@ export default defineConfig({
   preview: {
     port: 4173,
     host: true
-  }
+  },
+  // Ensure proper base path for deployment
+  base: './'
 });
