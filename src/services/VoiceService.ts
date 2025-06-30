@@ -8,7 +8,7 @@ export class VoiceService {
     this.initializeVoice();
   }
 
-  private initializeVoice() {
+  private initializeVoice(): void {
     // Wait for voices to be loaded
     const setVoice = () => {
       const voices = this.synthesis.getVoices();
@@ -59,11 +59,11 @@ export class VoiceService {
     });
   }
 
-  stop() {
+  stop(): void {
     this.synthesis.cancel();
   }
 
-  toggleMute() {
+  toggleMute(): boolean {
     this._isMuted = !this._isMuted;
     if (this._isMuted) {
       this.stop();
@@ -71,7 +71,7 @@ export class VoiceService {
     return this._isMuted;
   }
 
-  get isMuted() {
+  get isMuted(): boolean {
     return this._isMuted;
   }
 }
