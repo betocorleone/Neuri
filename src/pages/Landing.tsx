@@ -45,7 +45,7 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
               <div className="flex items-center space-x-3">
                 <div className="w-16 h-16 lg:w-20 lg:h-20">
                   <img 
-                    src="src/assets/Logo Neuri.png" 
+                    src="src/assets/Logo Neuri-.png" 
                     alt="Neuri Logo" 
                     className="w-full h-full object-contain"
                     //onError={(e) => {
