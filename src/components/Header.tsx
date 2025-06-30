@@ -31,18 +31,9 @@ const Header: React.FC<HeaderProps> = ({ currentView = 'home', onViewChange }) =
           <div className="flex items-center justify-center lg:justify-start space-x-3">
             <div className="w-12 h-12 lg:w-16 lg:h-16">
               <img 
-                src="/neuri-logo.svg" 
+                src="/Logo Neuri-.png" 
                 alt="Neuri Logo" 
                 className="w-full h-full object-contain"
-                onError={(e) => {
-                  // Fallback to gradient circle with N
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  const fallback = document.createElement('div');
-                  fallback.className = 'w-full h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center';
-                  fallback.innerHTML = '<span class="text-white text-xl font-bold">N</span>';
-                  target.parentNode?.appendChild(fallback);
-                }}
               />
             </div>
             <div className="text-center lg:text-left">
