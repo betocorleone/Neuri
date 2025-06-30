@@ -6,7 +6,7 @@ import SymptomSelector from '../components/SymptomSelector';
 import AnimatedButton from '../components/AnimatedButton';
 import SuccessAnimation from '../components/SuccessAnimation';
 import { Save, Calendar } from 'lucide-react';
-import { formatDate, getTodayDate } from '../utils/dateUtils';
+import { getTodayDate } from '../utils/dateUtils';
 import { soundManager } from '../utils/soundUtils';
 
 interface AddEntryProps {
@@ -39,7 +39,7 @@ const AddEntry: React.FC<AddEntryProps> = ({ onNavigateHome }) => {
     setIsSubmitting(true);
 
     try {
-      addEntry({
+      await addEntry({
         date,
         hadSeizure,
         seizureTime: hadSeizure ? seizureTime : undefined,

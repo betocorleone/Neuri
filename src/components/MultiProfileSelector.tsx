@@ -61,6 +61,8 @@ const MultiProfileSelector: React.FC<MultiProfileSelectorProps> = ({ onProfileCh
 
     // Fixed: Move function inside useEffect to avoid closure issues
     function createDefaultProfile(currentUserId: string) {
+      if (!user) return;
+      
       const defaultProfile: ChildProfile = {
         id: 'default',
         name: user.childName,

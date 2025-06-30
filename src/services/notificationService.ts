@@ -5,7 +5,7 @@ class NotificationService {
     this.init();
   }
 
-  private async init() {
+  private init() {
     // Simplified initialization - just check for notification support
     if ('Notification' in window) {
       this.permission = Notification.permission;
@@ -28,7 +28,7 @@ class NotificationService {
     return permission === 'granted';
   }
 
-  async showNotification(title: string, body: string, options: NotificationOptions = {}) {
+  async showNotification(title: string, body: string, options: NotificationOptions = {}): Promise<void> {
     if (this.permission !== 'granted') {
       console.log('Notification permission not granted');
       return;
@@ -58,7 +58,7 @@ class NotificationService {
   }
 
   // Simplified methods without Service Worker dependency
-  setEnabled(enabled: boolean) {
+  setEnabled(enabled: boolean): void {
     if (enabled) {
       this.requestPermission();
     }
