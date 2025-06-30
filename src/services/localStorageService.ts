@@ -249,11 +249,6 @@ class LocalStorageService {
     return stored ? JSON.parse(stored) : [];
   }
 
-  // Legacy method for backward compatibility
-  private getUserEntries(userId: string): DailyEntry[] {
-    return this.getUserEntriesForProfile(userId, 'default');
-  }
-
   // Get current date in YYYY-MM-DD format
   private getCurrentDate(): string {
     const today = new Date();

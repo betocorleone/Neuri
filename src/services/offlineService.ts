@@ -62,7 +62,12 @@ class OfflineService {
     if (!this.db) await this.initDB();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['entries'], 'readwrite');
+      if (!this.db) {
+        reject(new Error('Database not initialized'));
+        return;
+      }
+
+      const transaction = this.db.transaction(['entries'], 'readwrite');
       const store = transaction.objectStore('entries');
       
       const request = store.put({
@@ -80,7 +85,12 @@ class OfflineService {
     if (!this.db) await this.initDB();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['entries'], 'readonly');
+      if (!this.db) {
+        reject(new Error('Database not initialized'));
+        return;
+      }
+
+      const transaction = this.db.transaction(['entries'], 'readonly');
       const store = transaction.objectStore('entries');
       const index = store.index('userId');
       
@@ -95,7 +105,12 @@ class OfflineService {
     if (!this.db) await this.initDB();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['userProfile'], 'readwrite');
+      if (!this.db) {
+        reject(new Error('Database not initialized'));
+        return;
+      }
+
+      const transaction = this.db.transaction(['userProfile'], 'readwrite');
       const store = transaction.objectStore('userProfile');
       
       const request = store.put({
@@ -112,7 +127,12 @@ class OfflineService {
     if (!this.db) await this.initDB();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['userProfile'], 'readonly');
+      if (!this.db) {
+        reject(new Error('Database not initialized'));
+        return;
+      }
+
+      const transaction = this.db.transaction(['userProfile'], 'readonly');
       const store = transaction.objectStore('userProfile');
       
       const request = store.get(userId);
@@ -127,7 +147,12 @@ class OfflineService {
     if (!this.db) await this.initDB();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['pendingSync'], 'readwrite');
+      if (!this.db) {
+        reject(new Error('Database not initialized'));
+        return;
+      }
+
+      const transaction = this.db.transaction(['pendingSync'], 'readwrite');
       const store = transaction.objectStore('pendingSync');
       
       const request = store.put(entry);
@@ -141,7 +166,12 @@ class OfflineService {
     if (!this.db) await this.initDB();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['pendingSync'], 'readonly');
+      if (!this.db) {
+        reject(new Error('Database not initialized'));
+        return;
+      }
+
+      const transaction = this.db.transaction(['pendingSync'], 'readonly');
       const store = transaction.objectStore('pendingSync');
       
       const request = store.getAll();
@@ -155,7 +185,12 @@ class OfflineService {
     if (!this.db) await this.initDB();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['pendingSync'], 'readwrite');
+      if (!this.db) {
+        reject(new Error('Database not initialized'));
+        return;
+      }
+
+      const transaction = this.db.transaction(['pendingSync'], 'readwrite');
       const store = transaction.objectStore('pendingSync');
       
       const request = store.delete(id);
@@ -256,7 +291,12 @@ class OfflineService {
     if (!this.db) await this.initDB();
 
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(['entries'], 'readwrite');
+      if (!this.db) {
+        reject(new Error('Database not initialized'));
+        return;
+      }
+
+      const transaction = this.db.transaction(['entries'], 'readwrite');
       const store = transaction.objectStore('entries');
       
       const request = store.delete(id);
@@ -288,7 +328,12 @@ class OfflineService {
     
     for (const storeName of stores) {
       await new Promise<void>((resolve, reject) => {
-        const transaction = this.db!.transaction([storeName], 'readwrite');
+        if (!this.db) {
+          reject(new Error('Database not initialized'));
+          return;
+        }
+
+        const transaction = this.db.transaction([storeName], 'readwrite');
         const store = transaction.objectStore(storeName);
         
         const request = store.clear();

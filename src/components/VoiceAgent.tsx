@@ -4,9 +4,10 @@ import { useAuth } from '../context/AuthContext';
 import { useDiary } from '../context/DiaryContext';
 import { VoiceService } from '../services/VoiceService';
 import { AIPatternAnalyzer } from '../services/AIPatternAnalyzer';
+import { DailyEntry } from '../types';
 
 interface VoiceAgentProps {
-  onEntryCreated?: (entry: any) => void;
+  onEntryCreated?: (entry: DailyEntry) => void;
   onNavigateToView?: (view: string) => void;
 }
 
@@ -18,7 +19,7 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ onEntryCreated, onNavigateToVie
   const [isOpen, setIsOpen] = useState(false);
   const [conversation, setConversation] = useState<Array<{type: 'agent' | 'user', message: string}>>([]);
   const [currentStep, setCurrentStep] = useState<'greeting' | 'emotion' | 'seizure' | 'symptoms' | 'observations' | 'complete'>('greeting');
-  const [entryData, setEntryData] = useState<any>({});
+  const [entryData, setEntryData] = useState<Partial<DailyEntry>>({});
   const [patterns, setPatterns] = useState<any>(null);
   
   const voiceService = useRef(new VoiceService());
@@ -41,7 +42,7 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ onEntryCreated, onNavigateToVie
       recognitionRef.current.interimResults = false;
       recognitionRef.current.lang = 'es-ES';
 
-      recognitionRef.current.onresult = (event) => {
+      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = event.results[0][0].transcript;
         console.log('Speech recognized:', transcript);
         handleUserResponse(transcript);
@@ -51,7 +52,7 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ onEntryCreated, onNavigateToVie
         setIsListening(false);
       };
 
-      recognitionRef.current.onerror = (event) => {
+      recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
         console.error('Speech recognition error:', event.error);
         setIsListening(false);
       };
@@ -290,7 +291,7 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ onEntryCreated, onNavigateToVie
       observations: response
     };
 
-    addEntry(finalEntry);
+    await addEntry(finalEntry);
     console.log('Entry created:', finalEntry);
     
     let message = `¡Perfecto! He guardado toda la información de tu día. `;
@@ -309,7 +310,7 @@ const VoiceAgent: React.FC<VoiceAgentProps> = ({ onEntryCreated, onNavigateToVie
     console.log('Step changed to complete');
     
     if (onEntryCreated) {
-      onEntryCreated(finalEntry);
+      onEntryCreated(finalEntry as DailyEntry);
     }
   };
 
