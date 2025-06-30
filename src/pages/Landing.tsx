@@ -36,7 +36,7 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
                      // fallback.innerHTML = '<span class="text-white text-2xl">⚡</span>';
                      // target.parentNode?.appendChild(fallback);
                    // }
-                    }
+                    //}
                   />
                 </div>
               </a>
