@@ -27,15 +27,16 @@ const Landing: React.FC<LandingProps> = ({ onGetStarted, onLogin }) => {
                     src="src/assets/black_circle_360x360 bolt.png" 
                     alt="bolt.new" 
                     className="w-full h-full object-contain"
-                    onError={(e) => {
+                  //  onError={(e) => {
                       // Fallback to a simple black circle with bolt icon
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const fallback = document.createElement('div');
-                      fallback.className = 'w-full h-full bg-black rounded-full flex items-center justify-center';
-                      fallback.innerHTML = '<span class="text-white text-2xl">⚡</span>';
-                      target.parentNode?.appendChild(fallback);
-                    }}
+                    //  const target = e.target as HTMLImageElement;
+                     // target.style.display = 'none';
+                     // const fallback = document.createElement('div');
+                     // fallback.className = 'w-full h-full bg-black rounded-full flex items-center justify-center';
+                     // fallback.innerHTML = '<span class="text-white text-2xl">⚡</span>';
+                     // target.parentNode?.appendChild(fallback);
+                   // }
+                    }
                   />
                 </div>
               </a>
