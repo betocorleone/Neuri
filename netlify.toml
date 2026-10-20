@@ -10,3 +10,6 @@
 # Next.js server routes use Netlify's automatically managed Next.js adapter.
 # Configure runtime secrets in Netlify, never in this file:
 # SUPABASE_URL, SUPABASE_ANON_KEY, NEURI_DATA_KEY
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
