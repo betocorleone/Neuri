@@ -1,81 +1,15 @@
 [build]
-  publish = "dist"
-  command = "npm ci && npm run type-check && npm run build"
+  base = "neuri-next"
+  command = "npm run build"
+  publish = ".next"
 
 [build.environment]
-  NODE_VERSION = "18.19.0"
-  NPM_VERSION = "10.2.3"
-  CI = "true"
-  NETLIFY_USE_YARN = "false"
-  # Prevent build timeouts and memory issues
-  NODE_OPTIONS = "--max-old-space-size=8192 --no-warnings"
-  # Ensure proper dependency resolution
-  NPM_CONFIG_LEGACY_PEER_DEPS = "true"
-  NPM_CONFIG_AUDIT = "false"
-  NPM_CONFIG_FUND = "false"
-  NPM_CONFIG_UPDATE_NOTIFIER = "false"
-  # Force npm to use exact versions
-  NPM_CONFIG_SAVE_EXACT = "true"
-  # Prevent interactive prompts
-  NPM_CONFIG_PROGRESS = "false"
-  NPM_CONFIG_LOGLEVEL = "error"
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"
 
-# Build processing optimizations
-[build.processing]
-  skip_processing = false
+# Next.js server routes use Netlify's automatically managed Next.js adapter.
+# Configure runtime secrets in Netlify, never in this file:
+# SUPABASE_URL, SUPABASE_ANON_KEY, NEURI_DATA_KEY
 
-[build.processing.css]
-  bundle = true
-  minify = true
-
-[build.processing.js]
-  bundle = true
-  minify = true
-
-[build.processing.html]
-  pretty_urls = true
-
-# SPA routing - CRITICAL for React apps
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Security headers
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-
-# Cache optimization for assets
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "*.js"
-  [headers.values]
-    Content-Type = "application/javascript; charset=utf-8"
-
-[[headers]]
-  for = "*.css"
-  [headers.values]
-    Content-Type = "text/css; charset=utf-8"
-
-# Context-specific builds for maximum consistency
-[context.production]
-  command = "npm ci && npm run type-check && npm run build"
-
-[context.deploy-preview]
-  command = "npm ci && npm run type-check && npm run build"
-
-[context.branch-deploy]
-  command = "npm ci && npm run type-check && npm run build"
-
-# Functions configuration (if needed in future)
-[functions]
-  directory = "netlify/functions"
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
